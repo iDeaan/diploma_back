@@ -1,0 +1,144 @@
+
+curl -X DELETE localhost:9200/boogaloo_users/
+
+curl -H 'Content-Type: application/json' -X PUT -d '
+{
+	"settings": {
+		"analysis": {
+			"filter": {
+				"ngram_filter": {
+					"type": "ngram",
+					"min_gram": 4,
+					"max_gram": 6
+				},
+				"short_ngram_filter": {
+                    "type": "ngram",
+                    "min_gram": 1,
+                    "max_gram": 2
+                }
+			},
+			"analyzer": {
+				"ngram_analyzer": {
+					"type": "custom",
+					"tokenizer": "standard",
+					"filter": ["lowercase", "ngram_filter"]
+				},
+				"short_ngram_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": ["lowercase", "short_ngram_filter"]
+                }
+			}
+		}
+	},
+	"mappings": {
+		"users": {}
+	}
+}
+' localhost:9200/boogaloo_users
+
+curl -H 'Content-Type: application/json' -X PUT -d '
+{
+	"users": {
+		"properties": {
+			"name": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				},
+				"analyzer": "ngram_analyzer"
+			},
+			"ngram_name": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                },
+                "analyzer": "short_ngram_analyzer"
+            },
+            "absolute_name": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+			"surname": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				},
+				"analyzer": "ngram_analyzer"
+			},
+			"ngram_surname": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                },
+                "analyzer": "short_ngram_analyzer"
+            },
+            "absolute_surname": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+			"email": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				},
+				"analyzer": "ngram_analyzer"
+			},
+			"login": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				},
+				"analyzer": "ngram_analyzer"
+			},
+			"ngram_login": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                },
+                "analyzer": "short_ngram_analyzer"
+            },
+            "absolute_login": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            }
+		}
+	}
+}
+' localhost:9200/boogaloo_users/users/_mappings
