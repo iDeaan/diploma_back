@@ -62,6 +62,8 @@ const convertGender = gender => gender === 1 ? 'male' : 'female';
 
 const convertMaritalStatus = value => value === 1 ? 'single' : 'not single';
 
+const convertBoolean = boolVal => !!boolVal === true ? 'true' : 'false';
+
 module.exports = {
   convertAge,
   convertAverageLikes,
@@ -69,5 +71,6 @@ module.exports = {
   convertPostWords,
   convertPostsPerDay,
   convertGender,
-  convertMaritalStatus
+  convertMaritalStatus,
+  convertBoolean
 };

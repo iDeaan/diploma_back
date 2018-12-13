@@ -9,7 +9,8 @@ const {
   convertPostWords,
   convertPostsPerDay,
   convertGender,
-  convertMaritalStatus
+  convertMaritalStatus,
+  convertBoolean
 } = require('../helpers/convertModelData');
 
 const categoriesList = [
@@ -18,9 +19,16 @@ const categoriesList = [
 
 const returnRandomNumber = (min, max) => Math.round(Math.random() * (max - min) + min);
 
+const convertCategory = (categoryParam) => !!returnRandomNumber(0, 4)
+  ? categoriesList[categoryParam]
+  : categoriesList[Math.floor(Math.random() * categoriesList.length)];
+
 const createNewUser = (props) => {
   const {
-    age, avLikes, avTimeBetweenPosts, avPostWords, avPostsPerDay, result, className
+    age, avLikes, avTimeBetweenPosts, avPostWords, avPostsPerDay, result, className,
+    top1Param = null,
+    top2Param = null,
+    top3Param = null
   } = props;
 
 
@@ -40,9 +48,15 @@ const createNewUser = (props) => {
     gender: convertGender(Math.floor(Math.random() * 2)),
     marital_status: convertMaritalStatus(Math.floor(Math.random() * 2)),
 
-    top_1: categoriesList[Math.floor(Math.random() * categoriesList.length)],
-    top_2: categoriesList[Math.floor(Math.random() * categoriesList.length)],
-    top_3: categoriesList[Math.floor(Math.random() * categoriesList.length)],
+    top_1: top1Param !== null
+      ? convertCategory(top1Param)
+      : categoriesList[Math.floor(Math.random() * categoriesList.length)],
+    top_2: top2Param !== null
+      ? convertCategory(top2Param)
+      : categoriesList[Math.floor(Math.random() * categoriesList.length)],
+    top_3: top3Param !== null
+      ? convertCategory(top3Param)
+      : categoriesList[Math.floor(Math.random() * categoriesList.length)],
 
     average_likes: convertAverageLikes(returnRandomNumber(avLikes.min, avLikes.max)),
     average_time_between_posts:
@@ -51,7 +65,9 @@ const createNewUser = (props) => {
     average_posts_number_per_day:
       convertPostsPerDay(returnRandomNumber(avPostsPerDay.min, avPostsPerDay.max)),
 
-    result: !!(result.max ? returnRandomNumber(result.min, result.max) : result),
+    result: top1Param
+      ? (!!returnRandomNumber(0, 2) ? convertBoolean(1) : convertBoolean(!!(result.max ? returnRandomNumber(result.min, result.max) : result)))
+      : convertBoolean(!!(result.max ? returnRandomNumber(result.min, result.max) : result)),
     className
   };
 
