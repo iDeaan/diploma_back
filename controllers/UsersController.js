@@ -54,22 +54,34 @@ class UsersController extends Controller {
 
   getAction() {
     const {
-      limit, offset, relations, where, order
+      limit, offset, relations, where, order, visual, id, className
     } = this.req.urlParams;
 
-    models.Users.findAndCountAll({
-      include: relations,
-      offset: Number(offset) || 0,
-      limit: Number(limit) || 10,
-      where,
-      order: order && order.orderData
-        ? order.orderFunction(order.orderData, 'Users', models.sequelize) : null
-    }).then((users) => {
-      this.total = users.count;
-      this.response = users.rows;
-      this.code = users.count > 0 ? this.code : 404;
-      this.returnInformation();
-    });
+    if (visual) {
+      models.UsersClasses.findAndCountAll({
+        where: {
+          id,
+          class_name: className
+        }
+      }).then((uc) => {
+        this.response = uc.rows;
+        this.returnInformation();
+      });
+    } else {
+      models.Users.findAndCountAll({
+        include: relations,
+        offset: Number(offset) || 0,
+        limit: Number(limit) || 10,
+        where,
+        order: order && order.orderData
+          ? order.orderFunction(order.orderData, 'Users', models.sequelize) : null
+      }).then((users) => {
+        this.total = users.count;
+        this.response = users.rows;
+        this.code = users.count > 0 ? this.code : 404;
+        this.returnInformation();
+      });
+    }
   }
 
   postAction() {
