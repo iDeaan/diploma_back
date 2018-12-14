@@ -10,9 +10,7 @@ usersRouter.use(bodyParser.json());
 
 usersRouter.route('/')
   .get((req, res) => (new UsersController(req, res)).getAction())
-  .post((req, res, next) => {
-    // @TODO
-  })
+  .post((req, res) => (new UsersController(req, res)).postAction())
   .put((req, res) => {
     // @TODO
   })

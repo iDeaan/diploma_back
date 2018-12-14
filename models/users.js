@@ -14,7 +14,16 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     marital_status: DataTypes.STRING,
     createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    updatedAt: DataTypes.DATE,
+    top_1: DataTypes.STRING,
+    top_2: DataTypes.STRING,
+    top_3: DataTypes.STRING,
+    average_likes: DataTypes.STRING,
+    average_time_between_posts: DataTypes.STRING,
+    average_post_words: DataTypes.STRING,
+    average_posts_number_per_day: DataTypes.STRING,
+    login: DataTypes.STRING,
+    role: DataTypes.STRING
   }, {
     tableName: 'users'
   });

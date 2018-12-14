@@ -31,10 +31,12 @@
     "morgan": "~1.9.0",
     "mysql2": "^1.5.3",
     "pug": "2.0.0-beta11",
+    "request": "^2.88.0",
     "sequelize": "^4.37.6",
     "sequelize-cli": "^4.0.0",
     "serve-favicon": "~2.4.5",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "unirest": "^0.5.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",

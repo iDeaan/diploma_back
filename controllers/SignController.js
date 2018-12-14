@@ -48,8 +48,8 @@ class SignController extends Controller {
         }
         bodyParams.password = hashedPassword;
         models.Users.create(bodyParams).then((createdUser) => {
-          const usersController = new UsersController();
-          usersController.indexUserByUserId(createdUser.id);
+          // const usersController = new UsersController();
+          // usersController.indexUserByUserId(createdUser.id);
 
           this.response = createdUser;
           this.returnInformation();

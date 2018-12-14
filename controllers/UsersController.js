@@ -1,6 +1,6 @@
 const models = require('../models');
 const elasticsearch = require('elasticsearch');
-
+const unirest = require('unirest');
 const Controller = require('./Controller');
 
 class UsersController extends Controller {
@@ -11,8 +11,9 @@ class UsersController extends Controller {
   }
 
   getAction() {
-    console.log('=====================>')
-    const { limit, offset, relations, where, order } = this.req.urlParams;
+    const {
+      limit, offset, relations, where, order
+    } = this.req.urlParams;
 
     models.Users.findAndCountAll({
       include: relations,
@@ -27,6 +28,24 @@ class UsersController extends Controller {
       this.code = users.count > 0 ? this.code : 404;
       this.returnInformation();
     });
+  }
+
+  postAction() {
+    const { body } = this.req;
+
+    const postsList = body.posts[0].text;
+
+    unirest.post('https://twinword-text-classification.p.mashape.com/classify/')
+      .header('X-Mashape-Key', 'aJu88wbXJ3mshFpVQmQABJpApWESp1fs5mMjsnmWct6jjrI86u')
+      .header('Content-Type', 'application/x-www-form-urlencoded')
+      .header('Accept', 'application/json')
+      .send(`text=${postsList}`)
+      .end((result) => {
+        console.log(result.status, result.headers, result.body);
+
+        this.response = result.body;
+        this.returnInformation();
+      });
   }
 
   // indexUserByUserId(userId) {
