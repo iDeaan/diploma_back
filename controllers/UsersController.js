@@ -2,6 +2,48 @@ const models = require('../models');
 const elasticsearch = require('elasticsearch');
 const unirest = require('unirest');
 const Controller = require('./Controller');
+const { categoriesList } = require('../helpers/generateModelData')
+
+let promisesResponses = [];
+
+const returnData = (postsList) => {
+  return new Promise((resolve) => {
+    unirest.post('https://twinword-text-classification.p.mashape.com/classify/')
+      .header('X-Mashape-Key', 'aJu88wbXJ3mshFpVQmQABJpApWESp1fs5mMjsnmWct6jjrI86u')
+      .header('Content-Type', 'application/x-www-form-urlencoded')
+      .header('Accept', 'application/json')
+      .send(`text=${postsList}`)
+      .end((result) => {
+        promisesResponses.push(result.body.categories[0]);
+        resolve(result.body);
+      });
+  });
+};
+
+const returnClassifiedItem = (categoriesList, promisesResponses) => {
+  promisesResponses.forEach(item => {
+    const catName = item.toLowerCase()
+    const currentItemCategory = categoriesList.find(category => catName.includes(category.value.toLowerCase()))
+    if (currentItemCategory) {
+      currentItemCategory.times += 1;
+    }
+  });
+  const sorted = categoriesList.sort((first, second) => second.times - first.times);
+  return {
+    top_1: sorted[0].value,
+    top_2: sorted[1].value,
+    top_3: sorted[2].value
+  };
+};
+
+const calculateAverageWordsAndLikes = (posts) => {
+  const words = [];
+  posts.forEach(post => words.push(post.text.split(' ').length));
+  return {
+    agWords: Math.round(words.reduce((acc, cur) => { return acc + cur; }, 0) / words.length),
+    agLikes: Math.round(posts.reduce((acc, cur) => { return acc + cur.likes; }, 0) / posts.length)
+  };
+};
 
 class UsersController extends Controller {
   constructor(req, res) {
@@ -33,65 +75,29 @@ class UsersController extends Controller {
   postAction() {
     const { body } = this.req;
 
-    const postsList = body.posts[0].text;
+    const categoriesObject = categoriesList.map(item => ({ value: item, times: 0 }));
 
-    unirest.post('https://twinword-text-classification.p.mashape.com/classify/')
-      .header('X-Mashape-Key', 'aJu88wbXJ3mshFpVQmQABJpApWESp1fs5mMjsnmWct6jjrI86u')
-      .header('Content-Type', 'application/x-www-form-urlencoded')
-      .header('Accept', 'application/json')
-      .send(`text=${postsList}`)
-      .end((result) => {
-        console.log(result.status, result.headers, result.body);
+    const postsList = body.posts;
 
-        this.response = result.body;
-        this.returnInformation();
-      });
+    const promises = [];
+
+    promisesResponses = [];
+
+    postsList.forEach(item => {
+      promises.push(returnData(item.text));
+    });
+
+    return Promise.all(promises).then((item) => {
+      const classifiedText = returnClassifiedItem(categoriesObject, promisesResponses);
+      const averageWordsAndLikes = calculateAverageWordsAndLikes(postsList);
+
+      this.response = {
+        ...classifiedText,
+        ...averageWordsAndLikes
+      };
+      this.returnInformation();
+    });
   }
-
-  // indexUserByUserId(userId) {
-  //   const client = new elasticsearch.Client({
-  //     host: 'localhost:9200'
-  //   });
-  //
-  //   client.ping({
-  //     requestTimeout: 30000
-  //   }, (error) => {
-  //     if (error) {
-  //       console.error('ElasticSearch cluster is down!');
-  //     } else {
-  //       console.log('Connected correctly to ElasticSearch Cluster.');
-  //     }
-  //   });
-  //
-  //   models.Users.find({
-  //     where: {
-  //       id: userId
-  //     }
-  //   }).then((user) => {
-  //     const promises = [];
-  //     const resultUser = user.dataValues;
-  //
-  //     resultUser.ngram_name = user.name;
-  //     resultUser.absolute_name = user.name;
-  //
-  //     resultUser.ngram_surname = user.surname;
-  //     resultUser.absolute_surname = user.surname;
-  //
-  //     resultUser.ngram_login = user.login;
-  //     resultUser.absolute_login = user.login;
-  //
-  //     promises.push(client.index({
-  //       index: 'boogaloo_users',
-  //       type: 'users',
-  //       id: resultUser.id,
-  //       body: resultUser
-  //     }).catch((err) => console.log('err', err)));
-  //
-  //     return Promise.all(promises).then(() => {
-  //       client.close();
-  //     });
-  //   });
-  // }
 }
 
 module.exports = UsersController;

@@ -75,5 +75,6 @@ const createNewUser = (props) => {
 };
 
 module.exports = {
-  createNewUser
+  createNewUser,
+  categoriesList
 };
