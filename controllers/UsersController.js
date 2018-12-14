@@ -78,6 +78,7 @@ class UsersController extends Controller {
     const categoriesObject = categoriesList.map(item => ({ value: item, times: 0 }));
 
     const postsList = body.posts;
+    const userId = body.id;
 
     const promises = [];
 
@@ -91,11 +92,27 @@ class UsersController extends Controller {
       const classifiedText = returnClassifiedItem(categoriesObject, promisesResponses);
       const averageWordsAndLikes = calculateAverageWordsAndLikes(postsList);
 
-      this.response = {
+      const updateObject = {
         ...classifiedText,
         ...averageWordsAndLikes
       };
-      this.returnInformation();
+
+      models.Users.find({
+        where: {
+          id: userId
+        }
+      }).then((user) => {
+        user.top_1 = classifiedText.top_1;
+        user.top_2 = classifiedText.top_2;
+        user.top_3 = classifiedText.top_3;
+
+        user.average_likes = averageWordsAndLikes.agLikes;
+        user.average_post_words = averageWordsAndLikes.agWords;
+
+        user.save();
+        this.response = updateObject;
+        this.returnInformation();
+      });
     });
   }
 }
