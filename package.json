@@ -13,6 +13,7 @@
     "migration-run": "node_modules/.bin/sequelize db:migrate"
   },
   "dependencies": {
+    "apriori": "^1.0.7",
     "bluebird": "^3.5.1",
     "body-parser": "~1.18.2",
     "chalk": "^2.4.1",
@@ -21,6 +22,7 @@
     "cors": "^2.8.4",
     "csv-writer": "^1.2.0",
     "debug": "~2.6.9",
+    "decision-tree": "^0.3.1",
     "elasticsearch": "^15.0.0",
     "eslint-config-airbnb": "^16.1.0",
     "express": "~4.15.5",
