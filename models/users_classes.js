@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
     class_id: DataTypes.INTEGER,
     tree: DataTypes.TEXT,
+    class_name: DataTypes.TEXT,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   }, {

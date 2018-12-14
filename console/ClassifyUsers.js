@@ -58,13 +58,18 @@ class ClassifyUsers {
         models.UsersClasses.destroy({
           where: {
             user_id: userId,
+            class_name: className
           }
         }).then(() => {
-          models.UsersClasses.create({
-            user_id: userId,
-            class_id: 100,
-            tree: JSON.stringify(treeModel)
-          }).then(() => closeConnection());
+          if (predicted_class === true) {
+            models.UsersClasses.create({
+              user_id: userId,
+              class_name: className,
+              tree: JSON.stringify(treeModel)
+            }).then(() => closeConnection());
+          } else {
+            closeConnection();
+          }
         });
 
         // console.log(util.inspect(treeModel, { showHidden: false, depth: null }));
