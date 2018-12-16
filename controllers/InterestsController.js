@@ -13,7 +13,7 @@ class InterestsController extends Controller {
       limit, offset, relations, where, order
     } = this.req.urlParams;
 
-    models.Users.findAndCountAll({
+    models.Interests.findAndCountAll({
       include: relations,
       offset: Number(offset) || 0,
       limit: Number(limit) || 10,
