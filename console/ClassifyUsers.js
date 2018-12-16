@@ -61,15 +61,15 @@ class ClassifyUsers {
             class_name: className
           }
         }).then(() => {
-          if (predicted_class === true) {
+          // if (predicted_class === true) {
             models.UsersClasses.create({
               user_id: userId,
               class_name: className,
               tree: JSON.stringify(treeModel)
             }).then(() => closeConnection());
-          } else {
-            closeConnection();
-          }
+          // } else {
+          //   closeConnection();
+          // }
         });
 
         // console.log(util.inspect(treeModel, { showHidden: false, depth: null }));

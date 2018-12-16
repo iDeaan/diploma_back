@@ -54,13 +54,13 @@ class UsersController extends Controller {
 
   getAction() {
     const {
-      limit, offset, relations, where, order, visual, id, className
+      limit, offset, relations, where, order, visual, userId, className
     } = this.req.urlParams;
 
     if (visual) {
       models.UsersClasses.findAndCountAll({
         where: {
-          id,
+          user_id: userId,
           class_name: className
         }
       }).then((uc) => {
