@@ -28,6 +28,17 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'users'
   });
 
+  Users.associate = (models) => {
+    models.Users.hasMany(
+      models.UsersInterests,
+      {
+        foreignKey: 'user_id',
+        sourceKey: 'id',
+        as: 'interests'
+      }
+    );
+  };
+
   // Users.associate = (models) => {
   //   models.Users.hasMany(
   //     models.Tasks,
