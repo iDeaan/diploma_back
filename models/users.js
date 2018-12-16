@@ -37,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
         as: 'interests'
       }
     );
+    models.Users.hasMany(
+      models.AdvetiserInterests,
+      {
+        foreignKey: 'advetiser_id',
+        sourceKey: 'id',
+        as: 'advetiser_interests'
+      }
+    );
   };
 
   // Users.associate = (models) => {
