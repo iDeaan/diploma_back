@@ -7,6 +7,7 @@ const ChatsMessagesController = require('./ChatsMessagesController');
 const UsersOnlineController = require('./UsersOnlineController');
 const UsersNotReadMessagesController = require('./UsersNotReadMessagesController');
 const ChatsUsersController = require('./ChatsUsersController');
+const InterestsController = require('./InterestsController');
 
 module.exports = {
   SignController,
@@ -17,5 +18,6 @@ module.exports = {
   ChatsMessagesController,
   UsersOnlineController,
   UsersNotReadMessagesController,
-  ChatsUsersController
+  ChatsUsersController,
+  InterestsController
 };
