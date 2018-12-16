@@ -13,6 +13,7 @@ class SignController extends Controller {
   }
 
   getAction() {
+    console.log('==================+> get Aciton')
     const { token, userId } = this.req.urlParams;
 
     if (token && userId) {
@@ -23,6 +24,7 @@ class SignController extends Controller {
   }
 
   postAction() {
+    console.log('=======================++>');
     this.registerUser();
   }
 

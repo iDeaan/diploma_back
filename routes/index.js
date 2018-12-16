@@ -11,6 +11,7 @@ const usersOnlineRouter = require('./usersOnlineRouter');
 const usersNotReadMessagesRouter = require('./usersNotReadMessagesRouter');
 const chatsUsersRouter = require('./chatsUsersRouter');
 const interestsRouter = require('./interestsRouter');
+const materialsRouter = require('./materialsRouter');
 
 const aclMiddleware = require('../middlewares/aclMiddleware');
 const urlParamsMiddleware = require('../middlewares/urlParamsMiddleware');
@@ -31,25 +32,26 @@ const routesList = (app) => {
   app.use('/users_online', usersOnlineRouter);
   app.use('/users_not_read_messages', usersNotReadMessagesRouter);
   app.use('/interests', interestsRouter);
+  app.use('/materials', materialsRouter);
   app.use('/', indexRouter);
 
   // 404 catch
-  app.use((req, res, next) => {
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-  });
+  // app.use((req, res, next) => {
+  //   const err = new Error('Not Found');
+  //   err.status = 404;
+  //   next(err);
+  // });
 
   // error handler
-  app.use((err, req, res) => {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-  });
+  // app.use((err, req, res) => {
+  //   // set locals, only providing error in development
+  //   res.locals.message = err.message;
+  //   res.locals.error = req.app.get('env') === 'development' ? err : {};
+  //
+  //   // render the error page
+  //   res.status(err.status || 500);
+  //   res.render('error');
+  // });
 };
 
 module.exports = routesList;

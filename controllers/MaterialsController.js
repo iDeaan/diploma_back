@@ -1,7 +1,7 @@
 const models = require('../models');
 const Controller = require('./Controller');
 
-class InterestsController extends Controller {
+class MaterialsController extends Controller {
   constructor(req, res) {
     super();
     this.req = req;
@@ -10,21 +10,10 @@ class InterestsController extends Controller {
 
   getAction() {
     const {
-      limit, offset, relations, where, order, userId
+      limit, offset, relations, where, order
     } = this.req.urlParams;
 
-    if (userId) {
-      return models.UsersInterests.findAndCountAll({
-        where: {
-          user_id: userId
-        }
-      }).then((item) => {
-        this.response = item.rows;
-        this.returnInformation();
-      })
-    }
-
-    models.Interests.findAndCountAll({
+    models.Materials.findAndCountAll({
       include: relations,
       offset: Number(offset) || 0,
       limit: Number(limit) || 10,
@@ -40,4 +29,4 @@ class InterestsController extends Controller {
   }
 }
 
-module.exports = InterestsController;
+module.exports = MaterialsController;

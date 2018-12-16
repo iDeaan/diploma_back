@@ -24,6 +24,14 @@ module.exports = (sequelize, DataTypes) => {
         as: 'materials'
       }
     );
+    models.Interests.hasMany(
+      models.Advetisments,
+      {
+        foreignKey: 'interest_id',
+        sourceKey: 'id',
+        as: 'advetisments'
+      }
+    );
   };
 
   return Interests;
