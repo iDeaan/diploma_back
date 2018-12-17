@@ -10,7 +10,7 @@ module.exports = {
           primaryKey: true,
           autoIncrement: true
         },
-        title: Sequelize.INTEGER,
+        title: Sequelize.STRING,
         description: Sequelize.STRING,
         isActive: Sequelize.STRING,
         createdAt: Sequelize.DATE,

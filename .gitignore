@@ -4,3 +4,4 @@ dist/
 v8-compile-cache-0/
 package-lock.json
 npm-debug.log
+class_models/

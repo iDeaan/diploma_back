@@ -3,5 +3,7 @@ module.exports = {
   username: 'root',
   password: 'root',
   dialect: 'mysql',
-  logging: false
+  logging: false,
+  warning: false,
+  operatorsAliases: false
 };
