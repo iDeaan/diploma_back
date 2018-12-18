@@ -11,6 +11,7 @@ const InterestsController = require('./InterestsController');
 const MaterialsController = require('./MaterialsController');
 const UsersStatisticsController = require('./UsersStatisticsController');
 const UsersInterestsController = require('./UsersInterestsController');
+const AdvetismentsController = require('./AdvetismentsController');
 
 module.exports = {
   SignController,
@@ -25,5 +26,6 @@ module.exports = {
   InterestsController,
   MaterialsController,
   UsersStatisticsController,
-  UsersInterestsController
+  UsersInterestsController,
+  AdvetismentsController
 };
