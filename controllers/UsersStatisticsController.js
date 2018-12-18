@@ -50,17 +50,27 @@ class InterestsController extends Controller {
         let notFreeCount = 0;
         result.map(user => Number(user.marital_status) === 1 ? notFreeCount++ : freeCount++);
 
-        this.response = [
-          {
-            title: 'Зайняті',
-            count: notFreeCount
-          },
-          {
-            title: 'Вільні',
-            count: freeCount
+        models.Interests.find({
+          where: {
+            id: interestId
           }
-        ];
-        this.returnInformation();
+        }).then((interest) => {
+          this.response = {
+            title: interest.title,
+            items: [
+              {
+                title: 'Зайняті',
+                count: notFreeCount
+              },
+              {
+                title: 'Вільні',
+                count: freeCount
+              }
+            ]
+          };
+
+          this.returnInformation();
+        });
       }).catch((err) => {
         console.log('err', err);
         this.response = err;
@@ -91,17 +101,26 @@ class InterestsController extends Controller {
         let femaleCount = 0;
         result.map(user => Number(user.gender) === 1 ? maleCount++ : femaleCount++);
 
-        this.response = [
-          {
-            title: 'Чоловіки',
-            count: maleCount
-          },
-          {
-            title: 'Жінки',
-            count: femaleCount
+        models.Interests.find({
+          where: {
+            id: interestId
           }
-        ];
-        this.returnInformation();
+        }).then((interest) => {
+          this.response = {
+            title: interest.title,
+            items: [
+              {
+                title: 'Чоловіки',
+                count: maleCount
+              },
+              {
+                title: 'Жінки',
+                count: femaleCount
+              }
+            ]
+          };
+          this.returnInformation();
+        });
       }).catch((err) => {
         console.log('err', err);
         this.response = err;
@@ -190,8 +209,17 @@ class InterestsController extends Controller {
           }
         });
 
-        this.response = ageRange;
-        this.returnInformation();
+        models.Interests.find({
+          where: {
+            id: interestId
+          }
+        }).then((interest) => {
+          this.response = {
+            title: interest.title,
+            items: ageRange
+          };
+          this.returnInformation();
+        });
       }).catch((err) => {
         console.log('err', err);
         this.response = err;
