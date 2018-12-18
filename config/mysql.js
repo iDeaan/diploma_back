@@ -4,6 +4,4 @@ module.exports = {
   password: 'root',
   dialect: 'mysql',
   logging: false,
-  warning: false,
-  operatorsAliases: false
 };

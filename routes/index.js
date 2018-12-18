@@ -13,6 +13,7 @@ const chatsUsersRouter = require('./chatsUsersRouter');
 const interestsRouter = require('./interestsRouter');
 const materialsRouter = require('./materialsRouter');
 const usersStatisticsRouter = require('./usersStatisticsRouter');
+const usersInterestsRouter = require('./usersInterestsRouter');
 
 const aclMiddleware = require('../middlewares/aclMiddleware');
 const urlParamsMiddleware = require('../middlewares/urlParamsMiddleware');
@@ -35,6 +36,7 @@ const routesList = (app) => {
   app.use('/interests', interestsRouter);
   app.use('/materials', materialsRouter);
   app.use('/users_statistics', usersStatisticsRouter);
+  app.use('/users_interests', usersInterestsRouter);
   app.use('/', indexRouter);
 
   // 404 catch
